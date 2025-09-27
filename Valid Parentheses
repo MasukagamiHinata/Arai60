@@ -1,0 +1,134 @@
+#### Valid Parentheses (https://leetcode.com/problems/valid-parentheses/)
+
+```Python3
+
+#### step1
+#見当がつかなかった。最初から答え(yakataNさんの解答)を見て書いた。
+#(https://github.com/yakataN/Arai60/compare/Valid-Parentheses)
+class Solution:
+    def isValid(self, s: str) -> bool:
+
+        OPEN_BRACKETS = ["(", "{", "["]
+        OPEN_TO_CLOSE_BRACKETS = {
+            "(": ")",
+            "{": "}",
+            "[": "]"
+        }
+        stack_open_brackets = []
+
+        for character in s:
+            if character in OPEN_BRACKETS:
+                stack_open_brackets.append(character)
+            elif not (stack_open_brackets and character ==  OPEN_TO_CLOSE_BRACKETS[stack_open_brackets.pop()]):
+                return False
+
+        return not stack_open_brackets
+
+#再帰下降構文解析でも解けるとあった。よくわからないので調べて実際にやってみる
+#Geminiに頼ってなんとか理解した。以下の通り
+correspond_brackets = {
+            "(": ")",
+            "[": "]",
+            "{": "}"
+        }
+open_brackets = set(correspond_brackets.keys())
+class Solution:
+    def isValid(self, s: str) -> bool:
+        end_index = self._check_validity(s, 0, correspond_brackets, open_brackets)
+        return end_index == len(s)
+
+    def _check_validity(self, s: str, i: int, correspond_brackets: dict, open_brackets: set) -> int:
+        n = len(s)
+
+        if i == n:
+            return i
+
+        j = i
+        while j < n:
+            char = s[j]
+            if char in open_brackets:
+                #初めの開きカッコ以降を部下（再帰で呼び出される関数）に任せる
+                next_start_index = self._check_validity(s, j + 1, correspond_brackets, open_brackets)
+
+                # 子関数（中身）が無効なら、直ちに -1 を返す
+                if next_start_index == -1:
+                    return -1 
+
+                # カッコどうしの対応を確認
+                # if char in open_brackets:のもとなのだが、下のelifから返されたインデックス[j]（最後の開きカッコの場所）
+                # を基準にカッコの対応を確認する
+                expected_close = correspond_brackets[char] #charに対応する閉じカッコ
+                j = next_start_index 
+                if j < n:
+                    # 対応するならjのカウントを１上げる
+                    if s[j] == expected_close:
+                        j += 1
+                    else:
+                        return -1
+                else:
+                    return -1
+
+            elif char in correspond_brackets.values():
+                # 閉じ括弧の場合：上階層の関数（親の開き括弧）に「ここまで処理しました」と報告
+                # 親の関数が自分の閉じ括弧を見つけたことを報告するため、
+                # 現在のインデックス j を返して処理を中断する
+                return j 
+                
+            else:
+                # 括弧以外の文字：スキップして次の文字へ
+                j += 1
+                
+        # ループ終了：最後まで処理できた場合、終端インデックスを返す
+        return j
+
+
+#### step2
+class Solution:
+    def Valid(self, string: str) -> bool: 
+        #アノテーションで返り値の型を明示すると助かるんだろうか。
+        #問題で想定されているのはsだけど省略せずstringと書いた方がわかりやすく思える。
+        #「可読性とは説明的な変数名をつけることではない」らしいが...。
+
+        open_brackets = ["(", "[", "{"]
+
+        correspond_brackets = {
+            "(": ")",
+            "[": "]",
+            "{": "}"
+        }
+        #open_to_closeよりcorrespondとした方が好み
+        #辞書を使って対応をとる考えはなかった。
+        #よくよく考えてみたら一対一の対応に向いてそうに見える。
+
+        stack_open_brackets = []
+        #空の机を用意するイメージ
+
+        for character in string:
+            if character in open_brackets:
+            #開きカッコをスタックに積む
+                stack_open_brackets.append(character)
+            elif not (stack_open_brackets and character == correspond_brackets[stack_open_brackets.pop()]):
+            #elif notによって行数が少なく書ける
+            #elseによってカッコ以外の文字はスキップして処理できそう
+            #閉じカッコが来ると、.popで直前の文字(開きカッコ)を取り出し、character(このとき閉じカッコ)と対応させる
+                return False
+        
+        return not stack_open_brackets
+
+#何度も書き直し
+class Solution:
+    def isValid(self, string: str) -> bool:
+        open_brackets = ["(", "[", "{"]
+        correspond_brackets = {
+            "(": ")",
+            "[": "]",
+            "{": "}"
+        }
+        stack_open_brackets = []
+
+        for character in string:
+            if character in open_brackets:
+                stack_open_brackets.append(character)
+            elif not (stack_open_brackets and character == correspond_brackets[stack_open_brackets.pop()]):
+                return False
+        return not stack_open_brackets
