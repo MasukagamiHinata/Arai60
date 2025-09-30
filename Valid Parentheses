@@ -132,3 +132,121 @@ class Solution:
             elif not (stack_open_brackets and character == correspond_brackets[stack_open_brackets.pop()]):
                 return False
         return not stack_open_brackets
+
+
+#### step3
+# 指摘をもとに書き直し
+class Solution:
+    open_brackets = {"(", "[", "{"}
+    close_brackets = {")", "]", "}"}
+    correspond_brackets = {
+        "(": ")",
+        "[": "]",
+        "{": "}"
+        }
+    def isValid(self, s: str) -> bool:
+        end_index = self._check_validity(s, 0)
+        return end_index == len(s)
+
+    def _check_validity(self, s: str, i: int):
+        n = len(s)
+
+        if i == n:
+            return i
+        
+        j = i
+        while j < n:
+            char = s[j]
+            if char in self.open_brackets:
+                next_end_index = self._check_validity(s, j+1)
+
+                if next_end_index == -1:
+                    return -1
+
+                expected_close = self.correspond_brackets[char]
+                j = next_end_index
+                if j < n:
+                    if s[j] == expected_close:
+                        j += 1
+                    else:
+                        return -1
+                else:
+                    return -1
+                
+            
+            elif char in self.close_brackets:
+                return j
+
+            else:
+                j += 1
+        
+        return j
+
+# 何度も書き直し。なにも見ず書けるように
+class Solution:
+    open_brackets = {"(", "[", "{"}
+    close_brackets = {")", "]", "}"}
+    correspond_brackets = {
+        "(": ")",
+        "[": "]",
+        "{": "}"
+    }
+    def isValid(self, s: str) -> bool:
+        end_index = self._check_validity(s, 0)
+        return end_index == len(s)
+
+    def _check_validity(self, s: str, i: int) -> int:
+        n = len(s)
+
+        if i == n:
+            return i
+        
+        j = i
+        while j < n:
+            char = s[j]
+            if char in self.open_brackets:
+                next_end_index = self._check_validity(s, j+1)
+                
+                if next_end_index == -1:
+                    return -1
+                
+                expected_close = self.correspond_brackets[char]
+                j = next_end_index
+                if j < n:
+                    if s[j] == expected_close:
+                        j += 1
+                    else:
+                        return -1
+                else:
+                    return -1
+
+            elif char in self.close_brackets:
+                return j
+
+            else:
+                j += 1
+        
+        return j
+
+
+
+# 実際に適用してみる
+solver = Solution()
+test_cases = {
+    "()[]{}": True,    # 有効
+    "([{}])": True,    # 有効 (ネスト)
+    "((()))": True,    # 有効
+    "(]": False,       # 無効 (閉じ括弧の不一致)
+    "([)": False,      # 無効 (順番の誤り)
+    "(((": False,      # 無効 (閉じ括弧の不足)
+    "]": False,        # 無効 (対応する開き括弧がない)
+    "a()b": True,      # 有効 (括弧以外の文字をスキップ)
+    "": True           # 有効 (空文字列)
+}
+
+print("--- 括弧の有効性チェック結果 ---")
+for s, expected in test_cases.items():
+    result = solver.isValid(s)
+    status = "OK" if result == expected else "NG"
+    # 結果の表示: '文字列' -> 結果 (期待値) [判定]
+    print(f"'{s}' -> {result} (期待値: {expected}) [{status}]")
