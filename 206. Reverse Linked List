@@ -1,0 +1,52 @@
+#### 206. Reverse Linked List (https://leetcode.com/problems/reverse-linked-list/)
+
+#### Python3
+
+#### step1
+#### これも見当がつかなかったのでまず答えを見て書いた。
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = None #node
+
+        while head:
+            temp = head.next 
+            # 自分(head)の次の番の人に適当にどこか立っててもらう感じ
+            head.next = node 
+            # .nextはポインターもしくは矢印のイメージ。node(最初はNone)の所在地に矢印を向ける
+            node = head 
+            # さっきまでheadだった人がnodeとして、次headになる人(tempで待機中)が指し示す目印としてふるまう
+            head = temp # 
+        return node
+        # 通常のリストのようにまとまった場所にはない(メモリ上で連続した位置を占めない)が、
+        # メモリ上のアドレスとポインターのリレーでリストのようになっている。
+        # だから連結リストの特定の場所にアクセスしたいなら最初からたどる必要がある
+
+# 何度も書き直し
+class Solution:
+    def reverselist(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = None
+
+        while head:
+            temp = head.next
+            head.next = node
+            node = head
+            head = temp
+
+        return node
+
+
+#### step2
+# コードを読みやすくしてみる
+class Solution:
+    def reverselist(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = None 
+        
+        while head:
+            storage = head.next # tempのみだと推測しづらいので。
+            head.next = node 
+            node = head 
+            head = storage 
+
+        return node
+
+#変数名以外、特に思いつかなかった。そもそも「可読性」ってなんなんだろう。
