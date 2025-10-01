@@ -14,7 +14,7 @@ class Solution:
             head.next = node 
             # .nextはポインターもしくは矢印のイメージ。node(最初はNone)の所在地に矢印を向ける
             node = head 
-            # さっきまでheadだった人がnodeとして、次headになる人(tempで待機中)が指し示す目印としてふるまう
+            # さっきまでheadだった人がnodeとして、つまり次にheadになる人(tempで待機中)が指し示す目印としてふるまう
             head = temp # 
         return node
         # 通常のリストのようにまとまった場所にはない(メモリ上で連続した位置を占めない)が、
