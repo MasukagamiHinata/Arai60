@@ -1,0 +1,38 @@
+#### 問題 142. Linked List Cycle II (https://leetcode.com/problems/linked-list-cycle-ii/)
+
+#### 言語：Python3
+
+#### step1
+# 方針はLinked List Cycleと変わらないはず(setを用いて素直に解く)。返り値の型を変えるだけだろう。
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if head is None or head.next is None:
+            return None
+        nodes_seen = set()
+        current = head
+        while current is not None:
+            if current in nodes_seen:
+                return current
+            nodes_seen.add(current)
+            current = current.next
+        return None
+
+# 時間計算量: O(n) 最悪の場合、訪問するノード数はnであるため。
+# 空間計算量: O(n) 最悪の場合、n個のノードすべてがset()に追加されるため。
+
+
+#### step2
+# コードを整える
+class Solution:
+    def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # if head...はあってもなくてもいいと思った
+        nodes_seen = set()
+        current = head
+        while current is not None:
+            if current in nodes_seen:
+                return current
+            nodes_seen.add(current)
+            current = current.next
+        return None
+# ほかに整えられそうなところはあまり見当たらなかった
+
