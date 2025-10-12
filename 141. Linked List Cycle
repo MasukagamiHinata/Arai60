@@ -52,3 +52,32 @@ class Solution:
                 return True
 
         return False
+
+
+#### step3 レビューを参考にコード修正
+
+# setを用いた解法
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+        nodes_seen = set()
+        current = head
+        while current is not None:
+            if current in nodes_seen:
+                return True
+            nodes_seen.add(current)
+            current = current.next
+        return False
+
+# フロイドの循環検出アルゴリズム
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+        if head is None or head.next is None: #not ではなく is None にすることで誤りを防ぐ
+            return False
+        fast = head
+        slow = head # 一行にまとめるのがいいわけではない
+        while fast and fast.next: 
+            fast = fast.next.next # fastが中心なので、fastを先に動かす。
+            slow = slow.next
+            if fast is slow: 
+                return True
+        return False
