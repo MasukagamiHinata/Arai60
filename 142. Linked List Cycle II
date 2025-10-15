@@ -1,6 +1,5 @@
+```Python3
 #### 問題 142. Linked List Cycle II (https://leetcode.com/problems/linked-list-cycle-ii/)
-
-#### 言語：Python3
 
 #### step1
 # 方針はLinked List Cycleと変わらないはず(setを用いて素直に解く)。返り値の型を変えるだけだろう。
@@ -54,4 +53,4 @@ class Solution:
             current = current.next
         return None
 # ほかに整えられそうなところはあまり見当たらなかった
-
+```
