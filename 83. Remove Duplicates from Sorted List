@@ -3,7 +3,7 @@
 方針：重複するノードをスキップすることRemoveできるのでは。重複は確実に隣接しているので、.nextとの比較によって判別できそう。
 
 ### step 1
-```python3
+```python
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -11,27 +11,26 @@ class ListNode:
 
 class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-
         if not head:
             return head
-
         current = head
         while current.next:
             if current.val == current.next.val:
                 current.next = current.next.next
             else:
                 current = current.next
-
         return head
+
 ```
 
-時間計算量:O(n)
-空間計算量:O(1)
+時間計算量:O(n) すべてのnodeを走査するので。
+空間計算量:O(1) nodeの数に関わらず変数は2つだけなので。
+10^7個のnodeが来たとき、CPUが1秒間に実行できる命令の総数を6*10^9とすると、Cでは1ms、Pythonでは10msぐらいで処理できそう
 
 
 ### step 2 コードを整える
 
-```python3
+```python
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -41,10 +40,59 @@ class Solution:
     def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
         current = head
         while current.next:
-            if current.next and current.val == current.next.val: # 最初のifの処理はこっちにまとめることができる。読みやすいかどうかはわからない
+            if current.next is not None and current.val == current.next.val:
                 current.next = current.next.next
             else:
                 current = current.next
-
         return head
+
+```
+
+# 二重ループを使った方法もある(yterashimaさんの解答より)
+# 個人的にはこちらの方が挙動をすぐに理解でき、好み
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = head
+        while node is not None:
+            while node.next is not None and node.val == node.next.val:
+                node.next = node.next.next
+            node = node.next
+        return head
+
+```
+
+### step 3 10分以内にミスなく書く。
+```python
+class ListNode:
+    def __init__(self, val=0, head=None):
+        self.val = val
+        self.next = next
+
+# 一重ループ
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = head
+        while node is not None and node.next is not None:
+            if node.val == node.next.val:
+                node.next = node.next.next
+            else:
+                node = node.next
+        return head
+
+# 二重ループ
+class Solution:
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        node = head
+        while node is not None:
+            while node.next is not None and node.val == node.next.val:
+                node.next = node.next.next
+            node = node.next
+        return head
+
 ```
