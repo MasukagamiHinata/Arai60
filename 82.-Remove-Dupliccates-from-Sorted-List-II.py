@@ -112,3 +112,26 @@ class Solution:
                 pred = curr
             curr = curr.next
         return dummy.next
+
+# step4: レビューをもとに修正
+# ループ検出を関数化して外に出す
+class Solution:
+    def _skip_duplicates(self, current: Optional[ListNode]) -> Optional[ListNode]:
+        while current.next is not None and current.val == current.next.val:
+            current = current.next
+        return current
+
+    def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        IMPOSSIBLE_VAL = -100
+        dummy = ListNode(IMPOSSIBLE_VAL, head)
+        current = head
+        previous = dummy
+        while current is not None:
+            if current.next is not None and current.val == current.next.val:
+                last_duplicate = self._skip_duplicates(current)
+                previous.next = last_duplicate.next
+                current = last_duplicate.next
+            else:
+                previous = current
+                current = current.next
+        return dummy.next
