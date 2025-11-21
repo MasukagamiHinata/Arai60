@@ -116,3 +116,63 @@ class Solution:
             seen[num] = i
 
 # 3回アクセプトされたので終了
+
+
+## step 4 レビューをもとに修正
+# 総当たり
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        if n < 2:
+            return []
+
+        for i in range(n - 1):
+            for j in range(i + 1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j] 
+
+        raise Exception(f"no pair found that sums to target '{target}'")
+
+
+# Hash
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        n = len(nums)
+        if n < 2:
+            return []
+
+        num_to_index = {} # 変数名をseen → num_to_indexへ
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in num_to_index:
+                complement_index = num_to_index[complement]
+                return [complement_index, i]
+            num_to_index[num] = i
+
+        raise Exception(f"no pair found th  at sums to target '{target}'")
+
+
+# 複数解への対応
+from typing import List
+
+class Solution:
+    def twoSumAllPairs(self, nums: List[int], target: int) -> List[List[int]]:
+        n = len(nums)
+        if n < 2:
+            return []
+
+        seen = {}
+        results = []
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                for complement_index in seen[complement]:
+                    results.append([complement_index, i])
+            if num not in seen:
+                seen[num] = []
+            seen[num].append(i) # これで動くはず
+
+        if not results: # results = []と初期化されているのでNoneにはならない
+            raise Exception(f"no pair found that sums to target '{target}'")     
+
+        return results
