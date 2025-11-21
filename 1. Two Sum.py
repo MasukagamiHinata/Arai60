@@ -161,16 +161,16 @@ class Solution:
         if n < 2:
             return []
 
-        seen = {}
+        num_to_index = {}
         results = []
         for i, num in enumerate(nums):
             complement = target - num
-            if complement in seen:
-                for complement_index in seen[complement]:
+            if complement in num_to_index:
+                for complement_index in num_to_index[complement]:
                     results.append([complement_index, i])
-            if num not in seen:
-                seen[num] = []
-            seen[num].append(i) # これで動くはず
+            if num not in num_to_index:
+                num_to_index[num] = []
+            num_to_index[num].append(i) # これで動くはず
 
         if not results: # results = []と初期化されているのでNoneにはならない
             raise Exception(f"no pair found that sums to target '{target}'")     
