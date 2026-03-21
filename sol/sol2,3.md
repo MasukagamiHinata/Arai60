@@ -1,5 +1,5 @@
 # step2
-# 修正＆コメント予測
+### 修正＆コメント予測
 
 ```py
 class Solution:
@@ -25,7 +25,7 @@ class Solution:
 ```
 
 # step3
-# 何度も書き直し
+### 何度も書き直し
 ```py
 class Solution:
     def numUniqueEmails(self, emails: List[str]) -> int:
