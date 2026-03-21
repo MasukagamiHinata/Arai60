@@ -1,5 +1,5 @@
 # step1
-# 普通に、組み込み関数のsplitとreplaceを使って解く
+### 普通に、組み込み関数のsplitとreplaceを使って解く
 ```py
 class Solution:
     def numUniqueEmails(self, emails: List[str]) -> int:
@@ -19,8 +19,7 @@ class Solution:
         return len(normalized_emails)
 ```
 
-# 正規表現を使うやり方もあるらしい
-# 読みにくい…練習にはいいが…
+### 正規表現を使うやり方もあるらしい。読みにくい。練習にはいいが…
 ```py
 import re
 
