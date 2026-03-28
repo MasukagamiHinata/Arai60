@@ -1,0 +1,83 @@
+#### 問題：Linked List Cycle (https://leetcode.com/problems/linked-list-cycle/)
+
+#### 言語：Python3
+
+#### step1
+
+# 友人に「フロイドの循環検出アルゴリズム」というものを教えてもらった。
+# 1.ループの検出 と 2.ループの開始点の検出 の両方が可能になっているらしい。調べて実装してみる。
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+        slow = head
+        fast = head
+        while head and head.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow is fast:
+                return True
+
+        return False
+
+# 実行時間を見積もってみる       
+
+# 時間計算量: O(n) 与えられたすべてのnodeをあたるため
+# 空間計算量: O(1) 使用する変数はhead, slow, fastのみであるため
+
+# 例えば100万nodeに対しては、
+# 一般的なコンピュータのクロック周波数が3×10^9Hzとして、
+# C言語が1秒に30×10^6ステップ(どのくらいかわからないのでGeminiに教えてもらった)実行するとすると、
+# Cでは10ミリ秒ぐらい、Pythonに関してはCの100倍程度遅い(単純なアルゴリズムなのでもっと速いかも)ので1000ミリ秒ぐらい？
+
+
+#### step2 コードの修正
+
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+          
+        if not head or not head.next: # リストが空もしくは1つしかないときすぐにFalse
+            return False
+
+        slow = fast = head # 一行にまとめられる
+        while fast and fast.next: # headでもアクセプトされてしまった(なんで？)がfastが正しそう。Fastが終端に到達せずslowとfastの合流を待つことが重要なので。
+            slow = slow.next
+            fast = fast.next.next
+            if slow is fast:
+                return True
+
+        return False
+
+
+#### step3 レビューを参考にコード修正
+
+# setを用いた解法
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+        nodes_seen = set()
+        current = head
+        while current is not None:
+            if current in nodes_seen:
+                return True
+            nodes_seen.add(current)
+            current = current.next
+        return False
+
+# フロイドの循環検出アルゴリズム
+class Solution:
+    def hasCycle(self, head: [ListNode]) -> bool:
+        if head is None or head.next is None: #not ではなく is None にすることで誤りを防ぐ
+            return False
+        fast = head
+        slow = head # 一行にまとめるのがいいわけではない
+        while fast and fast.next: 
+            fast = fast.next.next # fastが中心なので、fastを先に動かす。
+            slow = slow.next
+            if fast is slow: 
+                return True
+        return False
